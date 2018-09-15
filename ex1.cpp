@@ -11,8 +11,8 @@ public:
   AltMoney(int d, int c);
   void read_money(int& d, int& c);
 
-  friend void add(AltMoney m1, AltMoney m2, AltMoney& sum);
-  friend void subtract(AltMoney m1, AltMoney m2, AltMoney& subRes);
+  friend AltMoney add(AltMoney m1, AltMoney m2);
+  friend AltMoney subtract(AltMoney m1, AltMoney m2);
   void display_money();
 
 private:
@@ -23,10 +23,7 @@ private:
 int main(){
 
   int d, c;
-  AltMoney m1, m2, sum, subRes;
-
-  sum = AltMoney(0,0);
-  subRes = AltMoney(0,0);
+  AltMoney m1, m2, sum, sub;
 
   m1.read_money(d,c);
   m1 = AltMoney(d,c);
@@ -38,13 +35,13 @@ int main(){
   cout << "The second money is: ";
   m2.display_money();
 
-  add(m1, m2, sum);
+  sum = add(m1, m2);
   cout << "The sum is: ";
   sum.display_money();
 
-  subtract(m1, m2, subRes);
+  sub = subtract(m1, m2);
   cout << "The result of subtraction is: ";
-  subRes.display_money();
+  sub.display_money();
 
   return 0;
 }
@@ -70,43 +67,47 @@ void AltMoney::display_money(){
   cout << cents << endl;
 }
 
-void add(AltMoney m1, AltMoney m2, AltMoney& sum){
+AltMoney add(AltMoney m1, AltMoney m2){
 
+  AltMoney temp;
   int extra = 0;
-  sum.cents = m1.cents + m2.cents;
+  temp.cents = m1.cents + m2.cents;
 
-  if(sum.cents >= 100){
-    sum.cents = sum.cents - 100;
+  if(temp.cents >= 100){
+    temp.cents = temp.cents - 100;
     extra = 1;
   }
 
-  sum.dollars = m1.dollars + m2.dollars + extra;
+  temp.dollars = m1.dollars + m2.dollars + extra;
 
-
+  return temp;
 }
 
-void subtract(AltMoney m1, AltMoney m2, AltMoney& subRes){
+AltMoney subtract(AltMoney m1, AltMoney m2){
+
+  AltMoney temp;
 
   int extra = 0;
 
   if(m1.cents <= m2.cents){
-    subRes.cents = m2.cents - m1.cents;
+    temp.cents = m2.cents - m1.cents;
   } else{
-    subRes.cents = m1.cents - m2.cents;
+    temp.cents = m1.cents - m2.cents;
   }
 
 
-  if(subRes.cents >= 100){
-    subRes.cents = subRes.cents - 100;
+  if(temp.cents >= 100){
+    temp.cents = temp.cents - 100;
     extra = 1;
   }
 
   if(m1.dollars <= m2.dollars){
-    subRes.dollars = m2.dollars - m1.dollars;
+    temp.dollars = m2.dollars - m1.dollars;
   } else{
-    subRes.dollars = m1.dollars - m2.dollars - extra;
+    temp.dollars = m1.dollars - m2.dollars - extra;
   }
 
+  return temp;
 }
 
 void AltMoney::read_money(int& d, int& c){
