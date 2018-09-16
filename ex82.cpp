@@ -11,6 +11,9 @@ public:
   AltMoney(int d, int c);
 
   friend AltMoney operator +(AltMoney m1, AltMoney m2);
+  friend AltMoney operator %(AltMoney m1, AltMoney m2);
+  friend bool operator <(AltMoney m1, AltMoney m2);
+  friend bool operator >(AltMoney m1, AltMoney m2);
   void display_money();
 
 private:
@@ -23,7 +26,7 @@ void read_money(int& d, int& c);
 int main(){
 
   int d, c;
-  AltMoney m1, m2, sum;
+  AltMoney m1, m2, sum, diff;
 
   sum = AltMoney(0,0);
 
@@ -40,6 +43,10 @@ int main(){
   sum = m1 + m2;
   cout << "The sum is: ";
   sum.display_money();
+
+  diff = m1 % m2;
+  cout << "The difference is: ";
+  diff.display_money();
 
   return 0;
 }
@@ -79,6 +86,46 @@ AltMoney operator +(AltMoney m1, AltMoney m2){
   temp.dollars = m1.dollars + m2.dollars + extra;
 
   return temp;
+}
+
+AltMoney operator %(AltMoney m1, AltMoney m2){ //m1 represents income, m2 represents expenditure
+
+  AltMoney diff; //Difference between two variables
+  double posDiff = 0.05;
+  double negDiff = -0.02;
+
+  if(m1 > m2){
+    diff.cents = (m1.cents - m2.cents) * posDiff;
+    diff.dollars = (m1.dollars - m2.dollars) * posDiff;
+    return diff;
+
+  } else if(m2 > m1){
+    diff.cents = (m2.cents - m1.cents) * negDiff;
+    diff.dollars = (m2.dollars - m1.dollars) * negDiff;
+    return diff;
+
+  } else{
+    return diff;
+  }
+
+}
+
+bool operator <(AltMoney m1, AltMoney m2){
+
+  if(m1 < m2){
+    return true;
+  } else{
+    return false;
+  }
+}
+
+bool operator >(AltMoney m1, AltMoney m2){
+
+  if (m1 > m2){
+    return true;
+  } else{
+    return false;
+  }
 }
 
 void read_money(int& d, int& c){
