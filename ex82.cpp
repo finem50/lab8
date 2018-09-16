@@ -14,6 +14,7 @@ public:
   friend AltMoney operator %(AltMoney m1, AltMoney m2);
   friend bool operator <(AltMoney m1, AltMoney m2);
   friend bool operator >(AltMoney m1, AltMoney m2);
+  friend bool operator ==(AltMoney m1, AltMoney m2);
   void display_money();
 
 private:
@@ -69,7 +70,7 @@ void AltMoney::display_money(){
     cout << "0"; //To display a 0 on the left for numbers less than 10
   }
 
-  cout << cents << endl;
+  cout << dollars << endl;
 }
 
 AltMoney operator +(AltMoney m1, AltMoney m2){
@@ -90,29 +91,37 @@ AltMoney operator +(AltMoney m1, AltMoney m2){
 
 AltMoney operator %(AltMoney m1, AltMoney m2){ //m1 represents income, m2 represents expenditure
 
-  AltMoney diff; //Difference between two variables
+  AltMoney temp; //Difference between two variables
   double posDiff = 0.05;
   double negDiff = -0.02;
 
   if(m1 > m2){
-    diff.cents = (m1.cents - m2.cents) * posDiff;
-    diff.dollars = (m1.dollars - m2.dollars) * posDiff;
-    return diff;
+    temp.cents = (m1.cents - m2.cents) * posDiff;
+    temp.dollars = (m1.dollars - m2.dollars) * posDiff;
+
+    return temp;
 
   } else if(m2 > m1){
-    diff.cents = (m2.cents - m1.cents) * negDiff;
-    diff.dollars = (m2.dollars - m1.dollars) * negDiff;
-    return diff;
+    temp.cents = (m2.cents - m1.cents) * negDiff;
+    temp.dollars = (m2.dollars - m1.dollars) * negDiff;
 
-  } else{
-    return diff;
+    return temp;
+
+  } else if(m1 == m2){
+    temp.cents = m2.cents - m1.cents;
+    temp.dollars = m2.dollars - m1.dollars;
+
+    return temp;
   }
 
+  return temp;
 }
 
 bool operator <(AltMoney m1, AltMoney m2){
 
-  if(m1 < m2){
+  if(m1.dollars < m2.dollars){
+    return true;
+  } else if(m1.dollars == m2.dollars && m1.cents < m2.cents){
     return true;
   } else{
     return false;
@@ -121,7 +130,18 @@ bool operator <(AltMoney m1, AltMoney m2){
 
 bool operator >(AltMoney m1, AltMoney m2){
 
-  if (m1 > m2){
+  if (m1.dollars > m2.dollars){
+    return true;
+  } else if (m1.dollars == m2.dollars && m1.cents > m2.cents){
+    return true;
+  } else{
+    return false;
+  }
+}
+
+bool operator ==(AltMoney m1, AltMoney m2){
+
+  if (m1.dollars == m2.dollars && m1.cents == m2.cents){
     return true;
   } else{
     return false;
