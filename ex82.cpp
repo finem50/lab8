@@ -70,7 +70,7 @@ void AltMoney::display_money(){
     cout << "0"; //To display a 0 on the left for numbers less than 10
   }
 
-  cout << dollars << endl;
+  cout << cents << endl;
 }
 
 AltMoney operator +(AltMoney m1, AltMoney m2){
