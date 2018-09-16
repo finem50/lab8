@@ -13,8 +13,8 @@ class AltMoney{
 public:
   AltMoney();
   friend istream& operator >>(istream& ins, AltMoney& m);
+  friend ofstream& operator <<(ofstream& ous, AltMoney m);
   friend AltMoney operator +(AltMoney m1, AltMoney m2);
-  friend void write_money(ofstream& ous, AltMoney m);
 
 private:
   int dollars;
@@ -22,8 +22,8 @@ private:
 };
 
 istream& operator >>(istream& ins, AltMoney& m);
+ofstream& operator <<(ofstream& ous, AltMoney m);
 void get_streams(ifstream& ins, ofstream& ous);
-void write_money(ofstream& ous, AltMoney m);
 
 int main(){
 
@@ -35,15 +35,15 @@ int main(){
 
   ins >> m1;
   ous << "The first money is: ";
-  write_money (ous, m1);
+  ous << m1;
 
   ins >> m2;
   ous << "The second money is: ";
-  write_money(ous, m2);
+  ous << m2;
 
   sum = m1 + m2;
   ous << "The sum is: ";
-  write_money(ous, sum);
+  ous << sum;
 
   ins.close();
   ous.close();
@@ -55,12 +55,14 @@ AltMoney::AltMoney(){
 
 }
 
-void write_money(ofstream& ous, AltMoney m){
+ofstream& operator <<(ofstream& ous, AltMoney m){
 
   ous << "$" << m.dollars << ".";
   if(m.cents <= 9)
     ous << "0"; //To display a 0 on the left for numbers less than 10
   ous << m.cents << endl;
+
+  return ous;
 }
 
 AltMoney operator +(AltMoney m1, AltMoney m2){
